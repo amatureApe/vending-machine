@@ -11,7 +11,7 @@ contract VendingMachine {
   // set the initial vending machine balance to 100
   constructor() {
     owner = msg.sender;
-    doonutBalances[address(this)] = 100;
+    donutBalances[address(this)] = 100;
   }
 
   function getVendingMachineBalance() public view returns (uint) {

@@ -89,13 +89,14 @@ module.exports = {
     goerli: {
       provider: () => new HDWalletProvider({
         privateKeys: [process.env.PRIVATE_KEY_1],
-        providerOrUrl: ``,
+        providerOrUrl: process.env.INFURA_API_URL,
         numberOfAddresses: 1
       }),
       network_id: 5,
       gas: 5500000,
       confirmations: 2,
-      timeoutBlocks 200,
+      networkCheckTimeout: 1000000,
+      timeoutBlocks: 200,
       skipDryRun: true
     },
     // goerli: {
@@ -122,7 +123,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.17" // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.11" // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
