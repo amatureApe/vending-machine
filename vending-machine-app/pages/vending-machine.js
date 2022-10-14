@@ -8,6 +8,7 @@ import vmContract from '../blockchain/vending'
 const VendingMachine = () => {
   const [error, setError] = useState('')
   const [inventory, setInventory] = useState('')
+  const [myDonutCount, setMyDonutCount] = useState('')
 
   let web3
 
@@ -20,11 +21,18 @@ const VendingMachine = () => {
     setInventory(inventory)
   }
 
+  const getMyDonutCountHandler = async () => {
+    const accounts = await web3.eth.getAccounts()
+    const count = await vmContract.methods.donutBalances(accounts[0]).call()
+    setMyDonutCount(count)
+  }
+
   const connectWalletHandler = async () => {
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
       try {
         await window.ethereum.request({ method: "eth_requestAccounts" })
         web3 = new Web3(window.ethereum)
+        getMyDonutCountHandler()
       } catch (err) {
         setError(err.message)
       }
@@ -53,6 +61,11 @@ const VendingMachine = () => {
       <section>
         <div className="container">
           <h2>Vending machine inventory: {inventory}</h2>
+        </div>
+      </section>
+      <section>
+        <div className="container">
+          <h2>My donuts: {myDonutCount}</h2>
         </div>
       </section>
       <section>
