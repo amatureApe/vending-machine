@@ -1,12 +1,24 @@
 import 'bulma/css/bulma.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from '../styles/VendingMachine.module.css'
 import Head from 'next/head'
 import Web3 from 'web3'
+import vmContract from '../blockchain/vending'
 
 const VendingMachine = () => {
   const [error, setError] = useState('')
+  const [inventory, setInventory] = useState('')
+
   let web3
+
+  useEffect(() => {
+    getInventoryHandler()
+  })
+
+  const getInventoryHandler = async () => {
+    const inventory = await vmContract.methods.getVendingMachineBalance().call()
+    setInventory(inventory)
+  }
 
   const connectWalletHandler = async () => {
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
@@ -40,7 +52,7 @@ const VendingMachine = () => {
       </nav>
       <section>
         <div className="container">
-          <p>placeholder text</p>
+          <h2>Vending machine inventory: {inventory}</h2>
         </div>
       </section>
       <section>
