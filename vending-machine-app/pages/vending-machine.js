@@ -1,15 +1,21 @@
 import 'bulma/css/bulma.css'
+import { useState } from 'react'
 import styles from '../styles/VendingMachine.module.css'
 import Head from 'next/head'
 import Web3 from 'web3'
 
 const VendingMachine = () => {
+  const [error, setError] = useState('')
   let web3
 
-  const connectWalletHandler = () => {
+  const connectWalletHandler = async () => {
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
-      window.ethereum.request({ method: "eth_requestAccounts" })
-      web3 = new Web3(window.ethereum)
+      try {
+        await window.ethereum.request({ method: "eth_requestAccounts" })
+        web3 = new Web3(window.ethereum)
+      } catch (err) {
+        setError(err.message)
+      }
     } else {
       // meta mask not installed
       console.log("Please install metamask")
@@ -35,6 +41,11 @@ const VendingMachine = () => {
       <section>
         <div className="container">
           <p>placeholder text</p>
+        </div>
+      </section>
+      <section>
+        <div className="container has-text-danger">
+          <p>{error}</p>
         </div>
       </section>
     </div>
